@@ -1,0 +1,97 @@
+Certainly! Let's break down the line `const generatedText = response?.data?.choices?.[0]?.text?.trim();` and explain each part:
+
+1. `response?.data?.choices?.[0]?.text?.trim()`
+   - This is a chain of optional property access and method calls using optional chaining (`?.`).
+   - It accesses the properties and methods of the `response`, `data`, `choices`, and `text` objects.
+   - Each property/method access is guarded by the optional chaining operator `?.`, which ensures that if any intermediate property is `null` or `undefined`, the expression short-circuits and returns `undefined` instead of throwing an error.
+
+2. `response?`
+   - The `response` object is checked for existence or truthiness before accessing the `data` property. If `response` is `null` or `undefined`, the expression short-circuits and returns `undefined`.
+
+3. `data?`
+   - The `data` property is checked for existence or truthiness before accessing the `choices` property. If `data` is `null` or `undefined`, the expression short-circuits and returns `undefined`.
+
+4. `choices?`
+   - The `choices` property is checked for existence or truthiness before accessing the array element at index 0. If `choices` is `null` or `undefined`, the expression short-circuits and returns `undefined`.
+
+5. `[0]?`
+   - The array element at index 0 is checked for existence or truthiness before accessing the `text` property. If the array is empty or the element at index 0 is `null` or `undefined`, the expression short-circuits and returns `undefined`.
+
+6. `text?`
+   - The `text` property is checked for existence or truthiness before calling the `trim()` method. If `text` is `null` or `undefined`, the expression short-circuits and returns `undefined`.
+
+7. `trim()`
+   - If all the previous checks pass and `text` is a valid string, the `trim()` method is called on the `text` string to remove leading and trailing whitespace characters.
+
+Overall, this line of code ensures that each property or method access is safely guarded against potential `null` or `undefined` values, preventing errors when accessing nested properties. If any intermediate property is `null` or `undefined`, the final result will be `undefined`.
+
+// import express from "express";
+// import { Configuration, OpenAIApi } from "openai";
+// import * as dotenv from "dotenv";
+// dotenv.config();
+
+// const app = express();
+
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
+
+// app.get("/events", (req, res) => {
+//   res.setHeader("Content-Type", "text/event-stream");
+//   res.setHeader("Cache-Control", "no-cache");
+//   res.setHeader("Connection", "keep-alive");
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+// //   res.flushHeaders();
+
+//   res.write("\n");
+
+//   const streamEvents = async () => {
+//     try {
+//       const responsePromise = openai.createCompletion(
+//         {
+//           model: "text-davinci-003",
+//           prompt: "hello aer world",
+//           max_tokens: 100,
+//           temperature: 0,
+//         });
+
+//         const response = await responsePromise;
+
+
+//     //   const generatedText = response.choices[0].text.trim();
+//     //   const eventData = `data: ${generatedText}\n\n`;
+//     //   res.write(eventData);
+//     //   console.log(generatedText);
+//     if
+//      (
+//         response &&
+//         response.data &&
+//         response.data.choices &&
+//         response.data.choices.length > 0 &&
+//         response.data.choices[0].text
+//       ) 
+//       {
+//         const generatedText = response.data.choices[0].text.trim();
+//         const eventData = `data: ${generatedText}\n\n`;
+//         res.write(eventData);
+//         console.log(generatedText);
+//       } else {
+//         console.error("Error: Unexpected or empty response from OpenAI API");
+//         // console.log("Full response:", response);
+//       }
+//     } catch (error) {
+//       console.error("Error:", error.message);
+//     }
+//   };
+
+//   const streamInterval = setInterval(streamEvents, 3000);
+
+//   req.on("close", () => {
+//     clearInterval(streamInterval);
+//   });
+// });
+
+// app.listen(3000, () => {
+//   console.log("Server is running on port 3000");
+// });
